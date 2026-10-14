@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GenerationStatus {
+  QUEUED
+  GENERATING
+  READY
+  FAILED
+}
+
+enum ChainStatus {
+  UNREGISTERED
+  PENDING
+  REGISTERED
+  FAILED
+}
+
+model World {
+  id               String           @id @default(cuid())
+  ownerWallet      String
+  prompt           String
+  seed             String           @unique
+  blueprint        Json
+  visualParameters Json
+  currentState     Json
+  version          Int              @default(1)
+  generationStatus GenerationStatus @default(QUEUED)
+  chainStatus      ChainStatus      @default(UNREGISTERED)
+  chainId          Int?
+  contractAddress  String?
+  tokenId          String?
+  transactionHash  String?
+  blockNumber      String?
+  metadataUri      String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  evolutions       Evolution[]
+  likes            Like[]
+
+  @@index([ownerWallet])
+  @@index([createdAt])
+}
+
+model Evolution {
+  id               String   @id @default(cuid())
+  worldId          String
+  world            World    @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  version          Int
+  requestId        String   @unique
+  previousState    Json
+  proposedChanges  Json
+  appliedChanges   Json
+  newState         Json
+  eventDescription String
+  stateHash        String
+  createdAt        DateTime @default(now())
+
+  @@unique([worldId, version])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  worldId   String
+  world     World    @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  wallet    String
+  createdAt DateTime @default(now())
+
+  @@unique([worldId, wallet])
+}
+
+model AuthNonce {
+  wallet    String   @id
+  nonce     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}

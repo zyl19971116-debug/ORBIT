@@ -1,0 +1,3 @@
+"use client";
+import { useAccount } from "wagmi";
+export default function MyWorlds(){const {isConnected,address}=useAccount();return <main className="page-shell"><p className="page-kicker">PRIVATE ARCHIVE</p><h1 className="page-title">My worlds.</h1>{isConnected?<div className="result-card glass-panel"><h2>No worlds yet</h2><p className="page-subtitle">Connected as {address}. Worlds verified as yours will appear here after PostgreSQL and SIWE are configured.</p></div>:<div className="result-card glass-panel"><h2>Connect your wallet</h2><p className="page-subtitle">A wallet connection and signed SIWE session are required before private world records can be loaded.</p></div>}</main>}

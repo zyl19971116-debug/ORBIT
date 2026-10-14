@@ -1,69 +1,53 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Bot, Box, Flame, Globe2, Zap } from "lucide-react";
+import { WorldCard } from "@/components/worlds/WorldCard";
+
+const samples = [
+  { name: "Frost Haven", category: "Nature", tone: "ice", seed: 11 },
+  { name: "Sakura Cloud", category: "Fantasy", tone: "rose", seed: 22 },
+  { name: "Red Desert", category: "Ancient", tone: "ember", seed: 33 },
+  { name: "Neo Tokyo X", category: "Cyberpunk", tone: "neon", seed: 44 },
+  { name: "Eternal Forest", category: "Nature", tone: "forest", seed: 55 },
+  { name: "Star Harbor", category: "Space", tone: "space", seed: 66 },
+] as const;
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="home-shell">
+      <div className="hero-environment" aria-hidden="true" />
+      <section className="hero-grid">
+        <div className="hero-copy">
+          <p className="eyebrow">AI CREATES REAL WORLDS</p>
+          <h1>A WORLD BORN<br />FROM A <span>SENTENCE</span></h1>
+          <p className="lede">Describe a world in one sentence. Our AI brings it to life with landscapes, civilizations, rules, and endless possibilities.</p>
+          <p className="closing">Own it. Evolve it. Share it. Onchain.</p>
+          <div className="hero-actions">
+            <Link className="button primary" href="/create">Create Your World <ArrowRight size={18} /></Link>
+            <Link className="button secondary" href="/explore">Explore Worlds</Link>
+          </div>
+          <div className="stats-strip">
+            <div><Globe2 /><strong>0</strong><span>Worlds Created</span></div>
+            <div><Bot /><strong>0</strong><span>AI Citizens</span></div>
+            <div><Box /><strong>—</strong><span>World Value</span></div>
+            <div><Zap /><strong>0</strong><span>Live Worlds</span></div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="planet-stage">
+          <div className="orbit-hotspot"><span /><span /><span /></div>
         </div>
-      </main>
-    </div>
+        <aside className="world-preview glass-panel">
+          <div className="panel-kicker"><span>WORLD PREVIEW</span><em><i /> LIVE PRESET</em></div>
+          <div className="preview-art" aria-label="Official preset preview of floating islands" />
+          <h2>A peaceful floating island city</h2>
+          <p>Waterfalls descend from crystalline islands while an advanced civilization grows in harmony with its blue ocean world.</p>
+          <div className="tags">{["Floating Islands", "Advanced Civilization", "Peaceful", "Waterfalls", "Blue Ocean", "AI Citizens"].map((tag) => <span key={tag}>{tag}</span>)}</div>
+          <Link className="button primary wide" href="/create?prompt=A%20peaceful%20floating%20island%20city">Generate This World <ArrowRight size={18} /></Link>
+        </aside>
+      </section>
+      <section className="trending-section glass-panel">
+        <div className="section-heading"><h2><Flame size={18} /> Trending Worlds</h2><div className="category-tabs"><span className="active">ALL</span><span>FANTASY</span><span>CYBERPUNK</span><span>NATURE</span><span>SPACE</span><span>ANCIENT</span><span>FUTURE</span></div><Link href="/explore">View more <ArrowRight size={16} /></Link></div>
+        <div className="world-row">{samples.map((world, index) => <WorldCard key={world.name} {...world} rank={index + 1} />)}</div>
+      </section>
+    </main>
   );
 }
